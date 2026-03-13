@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta property="og:title" content="Scouse Arab Bantz — Best Clips">
+<meta property="og:image" content="https://justicemindsdev.github.io/scouse-arab-bantz-clips/thumbnail.png">
+<meta property="og:url" content="https://justicemindsdev.github.io/scouse-arab-bantz-clips/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://justicemindsdev.github.io/scouse-arab-bantz-clips/thumbnail.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>Scouse Arab Bantz — Best Clips</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#fff;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;min-height:100dvh;display:flex;flex-direction:column;overflow:hidden}
+.header{display:flex;align-items:center;gap:12px;padding:12px 16px;background:linear-gradient(135deg,#1a0a00 0%,#2d1000 100%);border-bottom:1px solid #d4af3733}
+.header img{width:48px;height:48px;border-radius:8px;border:2px solid #d4af37}
+.header h1{font-size:1.1rem;color:#d4af37;font-weight:700;letter-spacing:0.5px}
+.header .sub{font-size:.75rem;color:#999;margin-top:2px}
+.player-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:12px;position:relative;background:#000}
+video{width:100%;max-width:800px;max-height:55dvh;border-radius:12px;background:#111;object-fit:contain}
+.clip-info{text-align:center;padding:10px 16px;background:#111;border-top:1px solid #222}
+.clip-title{font-size:1rem;color:#d4af37;font-weight:600;margin-bottom:4px}
+.clip-meta{font-size:.75rem;color:#888}
+.clip-quote{font-size:.85rem;color:#ccc;font-style:italic;margin-top:6px;max-width:600px;margin-left:auto;margin-right:auto}
+.controls{display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 16px;background:#111;border-top:1px solid #222;padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+.nav-btn{width:52px;height:52px;border-radius:50%;border:2px solid #d4af37;background:transparent;color:#d4af37;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:all .2s}
+.nav-btn:active{background:#d4af3733;transform:scale(.95)}
+.play-btn{width:64px;height:64px;border-radius:50%;border:3px solid #d4af37;background:linear-gradient(135deg,#d4af3722,#d4af3711);color:#d4af37;font-size:1.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;transition:all .2s}
+.play-btn:active{background:#d4af3744;transform:scale(.95)}
+.counter{font-size:.85rem;color:#d4af37;font-weight:600;min-width:60px;text-align:center}
+.progress-row{display:flex;align-items:center;gap:8px;padding:0 16px 8px;background:#111}
+.progress-bar{flex:1;height:4px;background:#333;border-radius:2px;cursor:pointer;position:relative}
+.progress-fill{height:100%;background:#d4af37;border-radius:2px;width:0%;transition:width .1s linear}
+.time-label{font-size:.7rem;color:#888;min-width:40px}
+.dots{display:flex;gap:6px;justify-content:center;padding:6px 0}
+.dot{width:8px;height:8px;border-radius:50%;background:#333;transition:all .3s}
+.dot.active{background:#d4af37;transform:scale(1.3)}
+@media(max-width:600px){
+  .header h1{font-size:.95rem}
+  .header img{width:40px;height:40px}
+  video{max-height:45dvh;border-radius:8px}
+  .clip-title{font-size:.9rem}
+  .clip-quote{font-size:.8rem}
+  .nav-btn{width:46px;height:46px;font-size:1.2rem}
+  .play-btn{width:56px;height:56px;font-size:1.4rem}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <img src="artwork.png" alt="Scouse Arab Bantz">
+  <div>
+    <h1>SCOUSE ARAB BANTZ</h1>
+    <div class="sub">Best Clips — 10 Moments</div>
+  </div>
+</div>
+
+<div class="player-area">
+  <video id="vid" playsinline preload="metadata"></video>
+</div>
+
+<div class="clip-info">
+  <div class="clip-title" id="clipTitle"></div>
+  <div class="clip-meta" id="clipMeta"></div>
+  <div class="clip-quote" id="clipQuote"></div>
+</div>
+
+<div class="progress-row">
+  <span class="time-label" id="timeCur">0:00</span>
+  <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="time-label" id="timeDur" style="text-align:right">0:00</span>
+</div>
+
+<div class="dots" id="dots"></div>
+
+<div class="controls">
+  <button class="nav-btn" id="prevBtn" onclick="prev()">⏮</button>
+  <button class="play-btn" id="playBtn" onclick="togglePlay()">▶</button>
+  <button class="nav-btn" id="nextBtn" onclick="next()">⏭</button>
+</div>
+
+<script>
+const clips = [
+  {file:"clips/01-only-two-muslims.mp4", title:"Only Two Muslims in the City", time:"18:38", quote:"Arab identity and fighting the system — where it all starts."},
+  {file:"clips/02-childhood-trauma.mp4", title:"Childhood Trauma", time:"12:33", quote:"Raw pain. The trauma isn't history — it's still happening."},
+  {file:"clips/03-halal-discrimination.mp4", title:"Halal Discrimination", time:"19:46", quote:"Cross-contamination, cultural erasure, and fighting for basic rights."},
+  {file:"clips/04-autism-forensic.mp4", title:"Autism & Forensic Insights", time:"05:01", quote:"When neurodivergence meets forensic-level pattern recognition."},
+  {file:"clips/05-evidence-screenshots.mp4", title:"Building the Evidence", time:"28:55", quote:"Screenshots, timestamps, metadata — building the case brick by brick."},
+  {file:"clips/06-left-to-endure-abuse.mp4", title:"Left to Endure Abuse", time:"11:08", quote:"A child conditioned to survive what no child should face."},
+  {file:"clips/07-dwp-hypocrisy.mp4", title:"DWP Empathy Hypocrisy", time:"08:18", quote:"The system that preaches empathy while crushing the vulnerable."},
+  {file:"clips/08-sunday-witchcraft.mp4", title:"Sunday Witchcraft", time:"14:50", quote:"Pure bantz. Sometimes you just have to laugh."},
+  {file:"clips/09-three-boys.mp4", title:"Three Boys", time:"12:55", quote:"Family banter — the light side of Scouse Arab life."},
+  {file:"clips/10-workplace-legal.mp4", title:"Workplace Legal Guide", time:"37:12", quote:"Know your rights. The workplace breakdown nobody tells you."}
+];
+
+let idx = 0;
+const vid = document.getElementById('vid');
+const playBtn = document.getElementById('playBtn');
+const dots = document.getElementById('dots');
+const progressFill = document.getElementById('progressFill');
+const progressBar = document.getElementById('progressBar');
+const timeCur = document.getElementById('timeCur');
+const timeDur = document.getElementById('timeDur');
+
+// Build dots
+clips.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i===0?' active':'');
+  d.onclick = () => loadClip(i);
+  dots.appendChild(d);
+});
+
+function fmt(s){
+  if(isNaN(s)) return '0:00';
+  const m=Math.floor(s/60), sec=Math.floor(s%60);
+  return m+':'+(sec<10?'0':'')+sec;
+}
+
+function loadClip(i){
+  idx = i;
+  const c = clips[i];
+  vid.src = c.file;
+  vid.load();
+  document.getElementById('clipTitle').textContent = c.title;
+  document.getElementById('clipMeta').textContent = `Clip ${i+1} of ${clips.length} · starts at ${c.time}`;
+  document.getElementById('clipQuote').textContent = `"${c.quote}"`;
+  playBtn.textContent = '▶';
+  progressFill.style.width = '0%';
+  timeCur.textContent = '0:00';
+  timeDur.textContent = '0:00';
+  document.querySelectorAll('.dot').forEach((d,j) => d.className = 'dot'+(j===i?' active':''));
+  vid.play().catch(()=>{});
+}
+
+function togglePlay(){
+  if(vid.paused){vid.play();playBtn.textContent='⏸'}
+  else{vid.pause();playBtn.textContent='▶'}
+}
+
+function next(){ loadClip((idx+1) % clips.length) }
+function prev(){ loadClip((idx-1+clips.length) % clips.length) }
+
+vid.addEventListener('play', () => playBtn.textContent='⏸');
+vid.addEventListener('pause', () => playBtn.textContent='▶');
+vid.addEventListener('ended', () => next());
+vid.addEventListener('timeupdate', () => {
+  if(vid.duration){
+    progressFill.style.width = (vid.currentTime/vid.duration*100)+'%';
+    timeCur.textContent = fmt(vid.currentTime);
+    timeDur.textContent = fmt(vid.duration);
+  }
+});
+vid.addEventListener('loadedmetadata', () => { timeDur.textContent = fmt(vid.duration) });
+
+progressBar.addEventListener('click', e => {
+  const r = progressBar.getBoundingClientRect();
+  vid.currentTime = ((e.clientX - r.left)/r.width) * vid.duration;
+});
+progressBar.addEventListener('touchstart', e => {
+  const r = progressBar.getBoundingClientRect();
+  const t = e.touches[0];
+  vid.currentTime = ((t.clientX - r.left)/r.width) * vid.duration;
+}, {passive:true});
+
+// Swipe support
+let touchX = 0;
+document.addEventListener('touchstart', e => { touchX = e.touches[0].clientX }, {passive:true});
+document.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].clientX - touchX;
+  if(Math.abs(diff) > 80){ diff > 0 ? prev() : next() }
+});
+
+// iOS audio unlock
+document.addEventListener('touchstart', () => { vid.play().then(()=>vid.pause()).catch(()=>{}) }, {once:true});
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if(e.key==='ArrowRight') next();
+  else if(e.key==='ArrowLeft') prev();
+  else if(e.key===' '){ e.preventDefault(); togglePlay(); }
+});
+
+// Load first clip
+loadClip(0);
+</script>
+</body>
+</html>
